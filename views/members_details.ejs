@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members | GMRASC</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="../bootstrap_dark.min.css">
+    <style>
+        table tbody tr:last-of-type {
+            /* border-bottom: 3px solid #009879 */
+            border-bottom: 3px solid rgba(187,134,252,0.8)
+        }
+
+        table thead tr {
+            background-color: rgba(187,134,252,0.8); 
+            /* background-color: #009879;  */
+            color: #fff;
+        }
+
+        hr {
+            background-color:rgba(187,134,252,0.8)
+        }
+
+        h1 {
+            color: rgba(187,134,252,0.8);
+        }
+    </style>
+    <script>
+        members = "<%= members %>";
+        members = JSON.parse(members.replace(/&#34;/g, '"'));
+    </script>
+</head>
+<body>
+    <div class="container mb-4">
+        <h1 class="display-4 text-center">Members Info ACM GMRIT</h1>
+        <hr>
+    </div>
+    <div id="op"></div>
+    
+    
+    <script>
+        info();
+
+        
+        function info() {
+
+                members.sort((a, b)=> {
+                    if(Number(a.acm_id) > Number(b.acm_id)) {
+                        return 1
+                    }
+                    else {
+                        return -1
+                    }
+                });
+                let output = `
+                    <div class="col-12">
+                        <table class="table table-sm table-striped table-bordered table-active rounded">
+                            <thead>
+                                <tr class="">
+                                    <th scope="column">ACM ID</th>
+                                    <th scope="column">Name</th>
+                                    <th scope="column">Membership Type</th>
+                                    <th scope="column">Expiration Date</th>
+                                    <th scope="column">Membership Period</th>
+                                    <th scope="column">JNTU No</th>
+                                    <th scope="column">Department</th>
+                                    <th scope="column">Batch</th>
+                                    <th scope="column">Gender</th>
+                                    <% if(session) {%>
+                                        <th scope="column">Phone No</th>
+                                        <th scope="column">Email</th>
+                                    <% }%>
+                                </tr>    
+                            </thead>
+                            <tbody>
+                `;
+                members.forEach(member => {
+                    if(member.acm_id ){
+                        let today = new Date();
+                        [date, month, year] = member.valid_upto.split('-').map(Number);
+                        let expire_date = new Date(year, month, date);
+                        if(expire_date > today) {
+                            output += `
+                                <tr>
+                                    <th scope="row">${member.acm_id}</th>
+                                    <td>${member.name}</td>
+                                    <td>${member.type}</td>
+                                    <td>${member.valid_upto}</td>
+                                    <td>${member.no_of_years} year</td>
+                                    <td>${member.jntu_number}</td>
+                                    <td>${member.department}</td>
+                                    <td>20${member.jntu_number.substring(0,2)}</td>
+                                    <td>${member.gender}</td>
+                                    <% if(session) {%>
+                                        <td>${member.phone_number}</td>
+                                        <td>${member.email}</td>
+                                    <% }%>
+                                </tr>
+                            `;
+                        } else
+                            output += `
+                                <tr class="table-danger">
+                                    <th scope="row">${member.acm_id}</th>
+                                    <td>${member.name}</td>
+                                    <td>${member}</td>
+                                    <td>${member}</td>
+                                    <td>${member}</td>
+                                    <td>${member}</td>
+                                    <td>${member}</td>
+                                    <td>${member}</td>
+                                    <td>${member}</td>
+                                    <td>${member}</td>
+                                    <td>${member}</td>
+                                </tr>
+                            `;
+                    }
+                })
+                output += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                document.getElementById('op').innerHTML = output;
+        }
+
+    </script>
+</body>
+</html>

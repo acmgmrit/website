@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIG Registration | GMRASC</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
+
+</head>
+<body>
+    <h1 class="text-center text-primary">ACM Student Chapter, GMRIT</h1>    
+    <h2 class="text-center" >SIG Registration</h2>
+    <hr style="background-color: beige;" width="75%">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-6 m-auto">
+                <div class="card card-body">
+                    <form method="post" id="form">
+                        <div class="form-group">
+                            <label for="jntu">JNTU Number</label>
+                            <input class="form-control" id="jntu" type="text" name="jntu" placeholder="Enter JNTU Number">
+                        </div>
+                        <label for="">Or</label>
+                        <div class="form-group">
+                            <label for="id">ACM ID</label>
+                            <input class="form-control" id="id" type="text" name="id" placeholder="Enter ACM ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="sig">Select SIG</label>
+                            <select name="sig" id="sig" class="form-control">
+                                <option value="-1" disabled="disabled" selected="true">Click to Select</option>
+                                <option value="0">Artificial Intelligence</option>
+                                <option value="1">Blockchain Technology</option>
+                                <option value="2">Communication Skills</option>
+                                <option value="3">Competitive Programming</option>
+                                <option value="4">Cyber Security</option>
+                                <option value="5">Entrepreneur Development Cell</option>
+                                <option value="6">Full Stack Web Developmentoption</option>
+                                <option value="7">Gate</option>
+                                <option value="8">Internet of Things</option>
+                                <option value="9">Mobile App Development</option>
+                            </select>
+                        </div>
+                        <input class="btn btn-primary btn-block" type="submit" value="Submit">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        let jntu = document.getElementById('jntu');
+        let id = document.getElementById('id');
+
+
+        jntu.addEventListener('input', () => {
+            if(jntu.value.length > 9) {
+                fetch(`/api/members/${jntu.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.msg == "Member Not Found") {
+                        document.getElementById('id').value = '';
+                        if(!document.querySelector('.acmid')){
+                            let alert = document.createElement('div');
+                            alert.className = 'alert alert-warning acmid';
+                            alert.append(document.createTextNode('No ACM Account Associated with given mail, please do contact "acm@gmrit.edu.in"'));
+                            let card = document.querySelector('.card');
+                            let form = document.getElementById('form');
+                            card.insertBefore(alert,form);
+                        }
+                    } else {
+                        document.getElementById('id').value = data[0].acm_id;
+                        if(document.querySelector('.acmid')){
+                            document.querySelector('.acmid').remove();
+                        }
+                    }
+                })
+                .catch( err => console.log(err));
+            } else {
+                document.getElementById('id').value = '';
+            }
+        });
+
+        id.addEventListener('input', () => {
+            if(id.value.length > 5) {
+                fetch(`/api/members/${id.value}`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.msg == "Member Not Found") {
+                        if(!document.querySelector('.acmid')){
+                            let alert = document.createElement('div');
+                            alert.className = 'alert alert-warning acmid';
+                            alert.append(document.createTextNode('ACM ID not found, please do contact "acm@gmrit.edu.in"'));
+                            let card = document.querySelector('.card');
+                            let form = document.getElementById('form');
+                            card.insertBefore(alert,form);
+                        }
+                    } else {
+                        if(document.querySelector('.acmid')){
+                            document.querySelector('.acmid').remove();
+                        }
+                    }
+                })
+                .catch( err => console.log(err));
+            }
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let form = document.getElementById('form');
+            let sig = document.getElementById('sig').value;
+            let id = document.getElementById('id').value;
+            
+            // ID validation
+            if(id.length === 0) {
+                let alert = document.createElement('div');
+                alert.className = 'alert alert-warning';
+                alert.append(document.createTextNode('Please Provide ACMID'));
+                let card = document.querySelector('.card');
+                let form = document.getElementById('form');
+                card.insertBefore(alert,form);
+
+                setTimeout(() => {
+                    document.querySelector('.alert').remove()
+                }, 3333);
+                return
+            }
+
+            if(sig == -1) {
+                let alert = document.createElement('div');
+                alert.className = 'alert alert-warning';
+                alert.append(document.createTextNode('Please Select a SIG'));
+                let card = document.querySelector('.card');
+                let form = document.getElementById('form');
+                card.insertBefore(alert,form);
+
+                setTimeout(() => {
+                    document.querySelector('.alert').remove()
+                }, 3333);
+                return
+            }
+
+            id = document.getElementById('id');
+            fetch(`/api/members/${id.value}`)
+            .then(response => response.json())
+            .then(data => {
+                if(data.msg == "Member Not Found") {
+                    if(!document.querySelector('.acmid')){
+                        let alert = document.createElement('div');
+                        alert.className = 'alert alert-warning acmid';
+                        alert.append(document.createTextNode('ACM ID not found, please do contact "acm@gmrit.edu.in"'));
+                        let card = document.querySelector('.card');
+                        let form = document.getElementById('form');
+                        card.insertBefore(alert,form);
+                    }
+                    if(document.querySelector('.acmid')){
+                        setTimeout(() => {
+                            document.querySelector('.alert').remove();
+                        }, 3333);
+                    }
+                    
+                return
+                }
+            })
+            .catch( err => console.log(err));
+
+            form.submit();
+        })
+    </script>
+</body>
+</html>

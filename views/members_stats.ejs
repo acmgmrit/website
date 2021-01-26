@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memberships | ACM GMRIT</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="../bootstrap_dark.min.css">
+    <style>
+        table tbody tr:last-of-type {
+            /* border-bottom: 3px solid #009879 */
+            border-bottom: 3px solid #bb86fc
+        }
+
+        table thead tr {
+            background-color: #bb86fc; 
+            /* background-color: #009879;  */
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mb-4">
+        <h1 class="display-4 text-primary text-center">Membership Info ACM GMRIT</h1>
+        <hr>
+    </div>
+    <div id="op"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="card col-12 col-sm-6 col-md-5 mr-4 mt-4" id='branch-card'>
+                <div class="card-header text-center">Branch Info</div>
+                <div class="card-body">
+                    <canvas id="branch" width="100%" height="100%">Branch Info Comes Here</canvas>
+                </div>
+            </div>
+                <div class="card col-12 col-sm-6 col-md-5 mr-4 mt-4" id='gender-card'>
+                <div class="card-header text-center">Gender Info</div>
+                <div class="card-body">
+                    <canvas id="gender" width="100%" height="100%">Gender Info Comes Here</canvas>
+                </div>
+            </div>
+                <div class="card col-12 col-sm-6 col-md-5 mr-4 mt-4" id='year-card'>
+                <div class="card-header text-center">Year Info</div>
+                <div class="card-body">
+                    <canvas id="year" width="100%" height="100%">Year Info Comes Here</canvas>
+                </div>
+            </div>
+                <div class="card col-12 col-sm-6 col-md-5 mr-4 mt-4" id='period-card'>
+                <div class="card-header text-center">Membership Period</div>
+                <div class="card-body">
+                    <canvas id="period" width="100%" height="100%">Period Info Comes Here</canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+    <script>
+
+        branch_labels = "<%= branch_labels %>".split(',');
+        branch_data = "<%= branch_data %>".split(',').map(num => +num);
+        gender_data = "<%= gender_data %>".split(',').map(num => +num);
+        batch_labels = "<%= batch_labels %>".split(',').map(label => label.substr(1)+" Admitted");
+        batch_data = "<%= batch_data %>".split(',').map(num => +num);
+        period_data = "<%= period_data %>".split(',').map(num => +num);
+
+        let branch_element  = document.getElementById('branch').getContext('2d');
+        Chart.defaults.global.defaultFontColor = '#fff';
+        let branch_info = new Chart(branch_element, {
+            type: 'pie',
+            data : {
+                labels: branch_labels,
+                datasets: [{
+                    label: 'branch',
+                    data: branch_data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',                        
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ]
+                }],
+            },
+            options: {
+                title: {
+                    display: false,
+                    text: "Branch Info",
+                    fontsize:90
+                },
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltips: {
+                    enable: true
+                }
+            }
+        });
+
+        // Gender Chart
+        let gender_element  = document.getElementById('gender').getContext('2d');
+        let gender_info = new Chart(gender_element, {
+            type: 'pie',
+            data : {
+                labels: ['Male', 'Female'],
+                datasets: [{
+                    label: 'Gender',
+                    data: gender_data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',                        
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ]
+                }],
+            },
+            options: {
+                title: {
+                    display: false,
+                    text: "Branch Info",
+                    fontsize:90
+                },
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltips: {
+                    enable: true
+                }
+            }
+        });
+
+        // Year Chart
+        let year_element  = document.getElementById('year').getContext('2d');
+        let year_info = new Chart(year_element, {
+            type: 'bar',
+            data : {
+                labels: batch_labels,
+                datasets: [{
+                    label: 'Year',
+                    data: batch_data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',                        
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ]
+                }],
+            },
+            options: {
+                title: {
+                    display: false,
+                    text: "Branch Info",
+                    fontsize:90
+                },
+                legend: {
+                    display: false,
+                    position: 'top'
+                },
+                tooltips: {
+                    enable: true
+                }
+            }
+        });
+
+        // Membership Period
+        let period_element  = document.getElementById('period').getContext('2d');
+        let period_info = new Chart(period_element, {
+            type: 'pie',
+            data : {
+                labels: ['1 Year', '2 Years', '3 Years'],
+                datasets: [{
+                    label: 'Membership Period',
+                    data: period_data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',                        
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ]
+                }],
+            },
+            options: {
+                title: {
+                    display: false,
+                    text: "Branch Info",
+                    fontsize:90
+                },
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                tooltips: {
+                    enable: true
+                }
+            }
+        });
+    </script>
+</body>
+</html>

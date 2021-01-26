@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Member Details</title>
+    <link rel="stylesheet" href="https://bootswatch.com/4/darkly/bootstrap.min.css">
+    <style>
+        .profile-card {
+            border-radius: 6px;
+            max-width:375px;
+            background: #31394D;
+            box-shadow: 0 12px 13px rgba(0,0,0,0.16), 0 12px 13px rgba(0,0,0,0.16);
+            text-align: center;
+        }
+
+        #profile-pic {
+            border-radius: 100%;
+            margin-top: 30px;
+            width: 132px;
+            height: 128px;
+            vertical-align: middle;
+            border-style: none;
+        }
+        .text-light {
+            color: #7C8097;
+        }
+
+        hr {
+            border-color: #7C8097;
+            width: 90%;
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding: 8px;">
+        <a class="navbar-brand" href="#"><img src="../img/logo.png" width="75px" height="auto"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">login/logout</button>
+        </div>
+    </nav>
+
+    <div class="container mt-3">
+        <div class="profile-card">
+            <img src="../img/profile.svg" alt="profile_pic" id="profile-pic">
+            <h3 id="name">Name</h3>
+            <p id="id" class="text-light">ACM ID</p>
+            <p id="jntu" class="text-light">JNTU Number</p>
+            <p id="email" class="text-light">Email</p>
+            <p id="contact" class="text-light">Contact Number</p>
+            <hr>
+            <div class="row">
+                <div class="col-5 d-flex justify-content-end align-items-center">
+                    <div class="">
+                        <p style="font-size: 22px;" id="valid-upto">0</p>
+                        <p class="text-light">valid upto</p>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <h2 id="active-years">0</h2>
+                    <p class="text-light">Active Years</p>
+                </div>
+                <div class="col-4">
+                    <h2 id="events">0</h2>
+                    <p class="text-light">Events Participated</p>
+                </div>
+            </div>
+        </div>
+    </div>
+      <script>
+
+        member = "<%= member %>";
+        member = JSON.parse(member.replace(/&#34;/g, '"'));
+
+        document.title = member.name+" | GMRASC";
+
+
+        document.getElementById('name').innerHTML = member.name;
+        document.getElementById('id').innerHTML = member.acm_id;
+        document.getElementById('jntu').innerHTML = member.jntu_number;
+        document.getElementById('email').innerHTML = member.email;
+        document.getElementById('contact').innerHTML = member.phone_number;
+        document.getElementById('events').innerHTML = member.events.length;
+        document.getElementById('active-years').innerHTML = member.no_of_years;
+        document.getElementById('valid-upto').innerHTML = member.valid_upto;
+    </script>
+</body>
+</html> 
