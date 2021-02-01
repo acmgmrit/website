@@ -16,6 +16,7 @@ let sig = (req, res) => {
 };
 
 let handle_sig = (req, res) => {
+    let handle_sig = (req, res) => {
     member = members.filter(member => member.acm_id == req.body.id);
     if(member.length == 0) {
         res.status('404').send('Member not found');
@@ -25,12 +26,12 @@ let handle_sig = (req, res) => {
             if(member.acm_id == req.body.id) {
                 member.sig = sigs[req.body.sig].name;
             }
+            res.redirect(`https://gmritchapter.acm.org/join-sig/response.php?id=${member.acm_id}&sig=${member.sig}`);
             return member
         });
     }
-    writeDataToFile('./data/members.json', members)
-    res.send('Status Updated');
-}
+    writeDataToFile('./data/members.json', members);
+};
 
 
 module.exports = {
