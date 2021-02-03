@@ -27,10 +27,10 @@ let handle_sig = (req, res) => {
                 member.sig = sigs[req.body.sig].name;
             }
             res.redirect(`https://gmritchapter.acm.org/join-sig/response.php?id=${member.acm_id}&sig=${member.sig}`);
-            return member
+            return
         });
     }
-    writeDataToFile('./data/members.json', members);
+   // writeDataToFile('./data/members.json', members);
 };
 
 
